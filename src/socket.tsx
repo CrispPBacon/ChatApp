@@ -1,13 +1,15 @@
 import { io } from "socket.io-client";
 import { red } from "./messageLogger";
-// import { useChat } from "./context/ChatContext";
 
+// @ts-ignore
 const URL =
   process.env.NODE_ENV === "production"
     ? undefined
-    : "https://chatappserver-rwzn.onrender.com/";
+    : "https://chatappserver-rwzn.onrender.com";
 
-export const socket = io(URL!, { autoConnect: false });
+export const socket = io("https://chatappserver-rwzn.onrender.com", {
+  autoConnect: false,
+});
 
 export const onConnect = async () => {
   socket.connect();
