@@ -13,7 +13,7 @@ const send_data = async (url: string, data: {}) => {
   }
 
   const response = await axios
-    .post("https://chatappserver-rwzn.onrender.com" + url, data, {
+    .post(url, data, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -37,7 +37,7 @@ const send_image = async (url: string, file: File) => {
   formData.append("file", file);
 
   const response = await axios
-    .post("https://chatappserver-rwzn.onrender.com" + url, formData, {
+    .post(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
