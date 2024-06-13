@@ -3,7 +3,9 @@ import { red } from "./messageLogger";
 // import { useChat } from "./context/ChatContext";
 
 const URL =
-  process.env.NODE_ENV === "production" ? undefined : "http://localhost:3500";
+  process.env.NODE_ENV === "production"
+    ? undefined
+    : "https://chatappserver-rwzn.onrender.com/";
 
 export const socket = io(URL!, { autoConnect: false });
 
