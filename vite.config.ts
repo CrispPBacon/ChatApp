@@ -9,6 +9,7 @@ export default defineConfig({
         target: "https://chatappserver-rwzn.onrender.com",
         changeOrigin: true,
         secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },
