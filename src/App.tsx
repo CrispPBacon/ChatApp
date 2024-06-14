@@ -1,25 +1,28 @@
-import "./styles/index.css";
+import { Suspense, lazy } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Login from "./components/auth/Login";
-import Signup from "./components/auth/Signup";
-import PublicRoute from "./api/PublicRoute";
-import PrivateRoute from "./api/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
-import ChatApp from "./components/chat/ChatApp";
 import { ChatProvider } from "./context/ChatContext";
-// import { useEffect } from "react";
-// import { blue, red } from "./messageLogger";
-export default function App() {
+
+// Lazy load components
+const Login = lazy(() => import("./components/auth/Login"));
+const Signup = lazy(() => import("./components/auth/Signup"));
+const PublicRoute = lazy(() => import("./api/PublicRoute"));
+const PrivateRoute = lazy(() => import("./api/PrivateRoute"));
+const ChatApp = lazy(() => import("./components/chat/ChatApp"));
+
+function App() {
   return (
     <AuthProvider>
-      <ChatProvider>
-        <Router>
+      <Router>
+        <Suspense fallback={<div>Loading...</div>}>
           <Routes>
             <Route
               path="/"
               element={
                 <PrivateRoute>
-                  <ChatApp />
+                  <ChatProvider>
+                    <ChatApp />
+                  </ChatProvider>
                 </PrivateRoute>
               }
             />
@@ -27,7 +30,9 @@ export default function App() {
               path="/m/:id"
               element={
                 <PrivateRoute>
-                  <ChatApp />
+                  <ChatProvider>
+                    <ChatApp />
+                  </ChatProvider>
                 </PrivateRoute>
               }
             />
@@ -48,8 +53,10 @@ export default function App() {
               }
             />
           </Routes>
-        </Router>
-      </ChatProvider>
+        </Suspense>
+      </Router>
     </AuthProvider>
   );
 }
+
+export default App;

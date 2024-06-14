@@ -3,15 +3,19 @@ import "../../styles/chat/navElements.css";
 import "../../styles/chat/leftElements.css";
 import "../../styles/chat/midElement.css";
 import "../../styles/chat/rightElements.css";
-import LeftHeader from "./elements/LeftHeader";
-import Inbox from "./elements/Inbox";
-import NavMenu from "./elements/NavMenu";
-import MidHeader from "./elements/MidHeader";
-import MessageBox from "./elements/MessageBox";
-import RightHeader from "./elements/RightHeader";
-import RightContent from "./elements/RightContent";
+import { lazy, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+
+import RightHeader from "./elements/RightHeader";
+import MidHeader from "./elements/MidHeader";
+import NavMenu from "./elements/NavMenu";
+import Inbox from "./elements/Inbox";
+import LeftHeader from "./elements/LeftHeader";
+import Friends from "./elements/Friends";
+
+const MessageBox = lazy(() => import("./elements/MessageBox"));
+const RightContent = lazy(() => import("./elements/RightContent"));
+
 import { useChat } from "../../context/ChatContext";
 import { useAuth } from "../../context/AuthContext";
 import { green, red } from "../../messageLogger";
@@ -21,19 +25,20 @@ import { onConnect, onDisconnect, socket } from "../../socket";
 import { handleAPIRequest } from "../../context/ContextFunctions";
 import PopUp from "./elements/PopUp";
 import axios from "axios";
+
 export default function ChatApp() {
   const navigate = useNavigate();
   const { id } = useParams<string>();
   const { user, logout } = useAuth();
 
   const { chat, selectChat, searchValue, getSearchResult } = useChat();
+
   const [searchResult, setSearchResult] = useState<userProp[]>([]);
   const [inbox, setInbox] = useState<inboxProps[]>([]);
+  const [menu, selectMenu] = useState("CHATS");
 
   const [images, setImages] = useState<imagesType[]>([]);
   const [image, setImage] = useState<imagesType | null>(null);
-
-  // const [newMessage, setNewMessage] = useState<inboxProps>();
 
   const inboxHandle = (data: inboxProps) => {
     setInbox((prev) => {
@@ -77,6 +82,19 @@ export default function ChatApp() {
     } catch (error) {
       setImages([]);
     }
+  };
+
+  const menuSelector = (menu: string) => {
+    if (menu === "CHATS") {
+      return <Inbox inbox={inbox} />;
+    } else if (menu === "FRIENDS") {
+      return <Friends />;
+    } else if (menu === "USERS") {
+      return null;
+    } else if (menu === "ANALYTICS") {
+      return null;
+    }
+    return null;
   };
 
   useEffect(() => {
@@ -149,14 +167,14 @@ export default function ChatApp() {
     <>
       <div className="container">
         <section className="component nav">
-          <NavMenu />
+          <NavMenu selectMenu={selectMenu} />
         </section>
         <section className="component left">
-          <LeftHeader />
+          <LeftHeader header={menu} />
           {searchValue ? (
             <SearchOutput searchResult={searchResult} />
           ) : (
-            <Inbox inbox={inbox} />
+            menuSelector(menu)
           )}
         </section>
         <section className="component mid ">

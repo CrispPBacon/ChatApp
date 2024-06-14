@@ -2,12 +2,10 @@ import { io } from "socket.io-client";
 import { red } from "./messageLogger";
 // import { useChat } from "./context/ChatContext";
 
-// const URL =
-//   process.env.NODE_ENV === "production"
-//     ? undefined
-//     : "https://chatappserver-rwzn.onrender.com";
-
-const URL = "https://chatappserver-rwzn.onrender.com";
+const URL =
+  process.env.NODE_ENV === "production"
+    ? "https://chatappserver-rwzn.onrender.com"
+    : "https://chatappserver-rwzn.onrender.com"; // THIS ON DEVELOPMENT
 
 console.log(process.env.NODE_ENV);
 export const socket = io(URL!, { autoConnect: false });
