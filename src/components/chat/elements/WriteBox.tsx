@@ -46,17 +46,6 @@ export default function WriteBox({ setMessages, fetchImages }: WriteBoxType) {
     );
   };
 
-  useEffect(() => {
-    socket.on("message_sent_response", () => {
-      if (chat?._id) {
-        fetchImages(chat._id);
-      }
-    });
-    return () => {
-      socket.off("message_sent_response");
-    };
-  }, [socket]);
-
   const handleKeyDown = (event: any) => {
     if (event.keyCode === 13 && event.shiftKey) {
       event.preventDefault();
@@ -98,6 +87,17 @@ export default function WriteBox({ setMessages, fetchImages }: WriteBoxType) {
     event.target.value = "";
   };
 
+  useEffect(() => {
+    socket.on("message_sent_response", () => {
+      if (chat?._id) {
+        fetchImages(chat._id);
+      }
+    });
+    return () => {
+      socket.off("message_sent_response");
+    };
+  }, [socket]);
+
   return (
     <div className="middle-footer">
       <div
@@ -138,7 +138,7 @@ export default function WriteBox({ setMessages, fetchImages }: WriteBoxType) {
         <IonIcon
           id="write-send"
           icon={send}
-          onClick={() => console.log(writeBoxRef.current?.innerText)}
+          onClick={() => onSend(writeBoxRef.current?.innerText)}
         />
       </span>
     </div>
