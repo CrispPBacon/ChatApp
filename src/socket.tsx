@@ -9,6 +9,7 @@ import { red } from "./messageLogger";
 
 const URL = "https://chatappserver-rwzn.onrender.com";
 
+console.log(process.env.NODE_ENV);
 export const socket = io(URL!, { autoConnect: false });
 
 export const onConnect = async () => {
