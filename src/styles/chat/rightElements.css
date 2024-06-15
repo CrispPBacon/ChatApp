@@ -71,7 +71,8 @@
   transform: scale(0.95);
 }
 
-.right .header .profile-pic img {
+.right .header .profile-pic img,
+.profile-pic ion-icon {
   width: 5rem;
   height: 5rem;
   margin: 0;

@@ -25,6 +25,12 @@ import { onConnect, onDisconnect, socket } from "../../socket";
 import { handleAPIRequest } from "../../context/ContextFunctions";
 import PopUp from "./elements/PopUp";
 import axios from "axios";
+import {
+  MessagesAnalytics,
+  UsersAnalytics,
+  UsersToday,
+} from "./elements/Analytics";
+import UsersController from "./elements/UsersController";
 
 export default function ChatApp() {
   const navigate = useNavigate();
@@ -89,7 +95,7 @@ export default function ChatApp() {
       return <Inbox inbox={inbox} />;
     } else if (menu === "FRIENDS") {
       return <Friends />;
-    } else if (menu === "USERS") {
+    } else if (menu === "ADMINPANEL") {
       return null;
     } else if (menu === "ANALYTICS") {
       return null;
@@ -98,6 +104,12 @@ export default function ChatApp() {
   };
 
   useEffect(() => {
+    if (user?.perms.banned) {
+      logout();
+      navigate("/login");
+      alert("You are banned from this website");
+    }
+
     const handleClick = () => {
       const storedData = localStorage.getItem("userdata");
       if (!storedData || user?._id !== JSON.parse(storedData)?._id) {
@@ -169,34 +181,76 @@ export default function ChatApp() {
         <section className="component nav">
           <NavMenu selectMenu={selectMenu} />
         </section>
-        <section className="component left">
-          <LeftHeader header={menu} />
-          {searchValue ? (
-            <SearchOutput searchResult={searchResult} />
-          ) : (
-            menuSelector(menu)
-          )}
-        </section>
-        <section className="component mid ">
-          {id ? (
-            <>
-              <MidHeader />
-              <MessageBox fetchImages={fetchImages} />
-            </>
-          ) : null}
-        </section>
-        <section className={id ? "component right" : "component right hide"}>
-          {id ? (
-            <>
-              <RightHeader />
-              <RightContent
-                images={images}
-                fetchImages={fetchImages}
-                setImage={setImage}
-              />
-            </>
-          ) : null}
-        </section>
+        {menu === "ANALYTICS" ? (
+          <>
+            <section className="component mid" style={{ overflowY: "auto" }}>
+              <h1
+                style={{
+                  backgroundColor: "rgba(0, 0, 0, .75)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "1rem",
+                }}
+              >
+                Analytics
+              </h1>
+              <UsersToday />
+              <UsersAnalytics />
+              <MessagesAnalytics />
+            </section>
+          </>
+        ) : menu === "ADMINPANEL" ? (
+          <>
+            <section className="component mid" style={{ overflowY: "auto" }}>
+              <h1
+                style={{
+                  backgroundColor: "rgba(0, 0, 0, .75)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "1rem",
+                }}
+              >
+                ADMIN DASHBOARD
+              </h1>
+              <UsersController />
+            </section>
+          </>
+        ) : (
+          <>
+            <section className="component left">
+              <LeftHeader header={menu} />
+              {searchValue ? (
+                <SearchOutput searchResult={searchResult} />
+              ) : (
+                menuSelector(menu)
+              )}
+            </section>
+            <section className="component mid ">
+              {id ? (
+                <>
+                  <MidHeader />
+                  <MessageBox fetchImages={fetchImages} />
+                </>
+              ) : null}
+            </section>
+            <section
+              className={id ? "component right" : "component right hide"}
+            >
+              {id ? (
+                <>
+                  <RightHeader />
+                  <RightContent
+                    images={images}
+                    fetchImages={fetchImages}
+                    setImage={setImage}
+                  />
+                </>
+              ) : null}
+            </section>
+          </>
+        )}
       </div>
       {image && chat?._id ? (
         <PopUp image={image} setImage={setImage} chat_id={chat._id} />

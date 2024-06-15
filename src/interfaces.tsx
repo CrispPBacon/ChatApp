@@ -21,6 +21,9 @@ export interface userProp {
   username: string;
   fullname: string;
   email: string;
+  isOnline: boolean;
+  role: string;
+  perms: { sendChat: boolean; banned: boolean };
 }
 
 export type userType = userProp | null;

@@ -14,7 +14,8 @@
 .conversation-head span h1 {
   font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
-.profile-pic img {
+.profile-pic img,
+#profile-pic {
   width: clamp(1.5rem, 5vw, 2rem);
   height: clamp(1.5rem, 5vw, 2rem);
   border-radius: 100px;

@@ -36,6 +36,12 @@ export default function MessageBox({ fetchImages }: Props) {
   };
 
   useEffect(() => {
+    if (!user?.perms.sendChat) {
+      alert("You are muted from the website");
+    }
+  }, []);
+
+  useEffect(() => {
     if (chat?._id) {
       socket.emit("join_room", chat._id);
       // console.log(`%cJoined the room ${chat._id}`, "color: #8b7cff;");
@@ -77,7 +83,9 @@ export default function MessageBox({ fetchImages }: Props) {
               })
           : null}
       </div>
-      <WriteBox setMessages={setMessages} fetchImages={fetchImages} />
+      {user?.perms.sendChat ? (
+        <WriteBox setMessages={setMessages} fetchImages={fetchImages} />
+      ) : null}
     </>
   );
 }

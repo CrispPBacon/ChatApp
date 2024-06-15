@@ -6,10 +6,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://chatappserver-rwzn.onrender.com",
+        target: "http://localhost:3500",
         changeOrigin: true,
         secure: true,
-        // rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },

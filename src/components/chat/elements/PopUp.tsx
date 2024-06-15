@@ -11,7 +11,6 @@ interface Props {
 export default function PopUp({ image, setImage, chat_id }: Props) {
   const downloadFile = async (filename: string) => {
     const id = chat_id;
-    console.log(id);
     try {
       const response = await axios.post(`/api/download/${id}/${filename}`, {
         responseType: "blob",
@@ -29,6 +28,7 @@ export default function PopUp({ image, setImage, chat_id }: Props) {
 
   const donwloadImg = async () => {
     downloadFile(image.details.filename);
+    console.log(image);
   };
 
   return (

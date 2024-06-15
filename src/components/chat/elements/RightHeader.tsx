@@ -1,5 +1,10 @@
 import { IonIcon } from "@ionic/react";
-import { add, chevronForward, settings } from "ionicons/icons";
+import {
+  add,
+  chevronForward,
+  personCircleOutline,
+  settings,
+} from "ionicons/icons";
 
 export default function RightHeader() {
   return (
@@ -9,7 +14,8 @@ export default function RightHeader() {
         <IonIcon className="slide-arrow" icon={chevronForward} />
       </span>
       <span className="profile-pic">
-        <img src="/images/Instagram.jfif" alt="FRiEND" />
+        {/* <img src="/images/Instagram.jfif" alt="FRiEND" /> */}
+        <IonIcon icon={personCircleOutline} />
       </span>
       <span style={{ marginTop: ".5rem" }}>
         <IonIcon

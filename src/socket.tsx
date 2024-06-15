@@ -5,7 +5,7 @@ import { red } from "./messageLogger";
 const URL =
   process.env.NODE_ENV === "production"
     ? "https://chatappserver-rwzn.onrender.com"
-    : "https://chatappserver-rwzn.onrender.com"; // THIS ON DEVELOPMENT
+    : "http://localhost:3500"; // THIS ON DEVELOPMENT
 
 console.log(process.env.NODE_ENV);
 export const socket = io(URL!, { autoConnect: false });

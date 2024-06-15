@@ -168,6 +168,21 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.addFriend {
+  padding: 0.5rem;
+  font-size: 1.5rem;
+}
+#addFriend {
+  cursor: pointer;
+}
+#addFriend,
+.addFriend:hover {
+  transform: scale(1.05);
+}
+.addFriend:active {
+  transform: scale(1.1);
+}
+
 @media screen and (max-width: 720px) {
   .title,
   .profile-details,
