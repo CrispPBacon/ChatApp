@@ -4,6 +4,16 @@ import { personCircleOutline } from "ionicons/icons";
 export default function Friends() {
   return (
     <div className="main">
+      <Friend />
+      <Friend />
+      <Friend />
+    </div>
+  );
+}
+
+function Friend() {
+  return (
+    <span>
       <div className="profile">
         <span>
           <IonIcon icon={personCircleOutline} />
@@ -12,6 +22,6 @@ export default function Friends() {
           <h1>Allan Soriano</h1>
         </div>
       </div>
-    </div>
+    </span>
   );
 }

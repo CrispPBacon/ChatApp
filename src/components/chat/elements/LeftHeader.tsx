@@ -3,6 +3,7 @@ import { close, ellipse, menuSharp, search } from "ionicons/icons";
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { useChat } from "../../../context/ChatContext";
+import FriendRequests from "./FriendRequests";
 
 interface Props {
   header: string;
@@ -12,6 +13,8 @@ export default function LeftHeader({ header }: Props) {
   const [menu, setMenu] = useState(false);
   const { logout } = useAuth();
   const { searchValue, setSearchValue } = useChat();
+
+  const [newOpen, setNewOpen] = useState(false);
 
   const title = (header: string) => {
     if (header === "CHATS") {
@@ -56,10 +59,11 @@ export default function LeftHeader({ header }: Props) {
         </span>
       )}
       {searchValue ? null : header !== "CHATS" ? null : (
-        <span id="newMessage">
+        <span id="newMessage" onClick={() => setNewOpen((prev) => !prev)}>
           <h4 style={{ letterSpacing: "2px", fontWeight: "300" }}>New</h4>
-          <IonIcon icon={ellipse} />
+          <IonIcon id="ellipse" icon={ellipse} />
           <span>1</span>
+          {newOpen ? <FriendRequests /> : null}
         </span>
       )}
     </div>
