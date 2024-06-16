@@ -4,7 +4,7 @@ import { userProp } from "../../../interfaces";
 import { useNavigate } from "react-router-dom";
 import { useChat } from "../../../context/ChatContext";
 import { useAuth } from "../../../context/AuthContext";
-import { handleAPIRequest } from "../../../context/ContextFunctions";
+import { socket } from "../../../socket";
 
 interface Props {
   searchResult: userProp[];
@@ -14,16 +14,23 @@ export default function SearchOutput({ searchResult }: Props) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const addFriend = async (
-    person_id: string,
-    sender_id: string | undefined
+    user_id: string | undefined,
+    person_id: string | undefined
   ) => {
-    await handleAPIRequest("/api/users", {
-      addFriend: { recipient_id: person_id, sender_id: sender_id },
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => console.error(error.message));
+    if (!person_id || !user_id) {
+      return alert("FILL IN THE IDS");
+    }
+    if (person_id === user_id) {
+      return alert("You cant sent friend request to yourself!")
+    }
+
+    socket.emit(
+      "send_friend_request",
+      { user_id, person_id },
+      (response: string) => {
+        alert(response);
+      }
+    );
   };
   return (
     <div className="main">
@@ -32,7 +39,6 @@ export default function SearchOutput({ searchResult }: Props) {
             <span
               style={{ display: "flex", alignItems: "center" }}
               id="addFriend"
-              onClick={() => addFriend(obj._id, user?._id)}
               key={obj._id}
             >
               <People
@@ -43,7 +49,11 @@ export default function SearchOutput({ searchResult }: Props) {
                   setSearchValue("");
                 }}
               />
-              <IonIcon icon={addCircle} className="addFriend" />
+              <IonIcon
+                icon={addCircle}
+                className="addFriend"
+                onClick={() => addFriend(user?._id, obj?._id)}
+              />
             </span>
           ))
         : null}
